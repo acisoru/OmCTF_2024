@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        
+        body {
+            font-family: 'Arial', sans-serif;
+            margin: 0;
+            padding: 0;
+            background: #20232a;
+            color: #61dafb;
+        }
+        .container {
+            width: 30%;
+            margin: auto;
+            overflow: hidden;
+            background: #22252b;
+            padding: 50px;
+            margin-top: 100px;
+            border-radius: 5px;
+            box-shadow: 3px 3px 10px rgba(0, 0, 0, 0.2);
+        }
+        header {
+            background: #20232a;
+            color: #61dafb;
+            padding: 20px 0px;
+            text-align: center;
+        }
+        header h1 {
+            margin: 0;
+        }
+        form {
+            padding: 20px 0;
+        }
+        .form-control {
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+        }
+        .form-control label {
+            display: block;
+            color: #61dafb;
+            margin-bottom: 5px;
+        }
+        .form-control input {
+            width: calc(100% - 20px);
+            padding: 10px;
+            border: 1px solid #61dafb;
+            border-radius: 5px;
+            background: #282c34;
+            color: #61dafb;
+        }
+        .form-control input[type="submit"] {
+            background: #61dafb;
+            border: 0;
+            color: #20232a;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+            margin-top: 20px;
+            width: 100%;
+            font-size: 16px;
+        }
+        .form-control input[type="submit"]:hover {
+            background: #4098a6;
+        }
+    </style>
+    <title>Вход — FixVR</title>
+</head>
+<body>
+    <header>
+        <div class="container">
+            <h1>FixVR</h1>
+            <h3>LOGIN</h3>
+        </div>
+    </header>
+
+    <div class="container">
+        <form id="login-form" action="/login" method="POST">
+            <div class="form-control">
+                <label for="email">Email</label>
+                <input type="email" id="email" maxlength="100" name="email" required>
+            </div>
+            <div class="form-control">
+                <label for="password">Пароль</label>
+                <input type="password" id="password" maxlength="256" name="password" required>
+            </div>
+            <div class="form-control">
+                <input type="submit" value="Войти">
+            </div>
+            <div id="error-message" style="color: red; display: none;"></div>
+        </form>
+    </div>
+
+    <script>
+        document.getElementById('login-form').addEventListener('submit', function(event) {
+            event.preventDefault();
+
+            const formData = new FormData(this);
+            
+            fetch('/login', {
+                method: 'POST',
+                body: formData
+            })
+            .then(response => {
+                if(response.ok) {
+                    return response.json();
+                } else {
+                    return response.json().then(data => {
+                        throw new Error(data.message);
+                    });
+                }
+            })
+            .then(data => {
+                window.location.href = '/panel';
+            })
+            .catch(error => {
+                console.error('Ошибка:', error);
+                const errorMessage = document.getElementById('error-message');
+                errorMessage.textContent = error.message;
+                errorMessage.style.display = 'block';
+
+                // Hide error message after 3 seconds
+                setTimeout(() => {
+                    errorMessage.style.display = 'none';
+                }, 3000);
+            });
+        });
+    </script>
+
+</body>
+</html>

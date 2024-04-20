@@ -1,0 +1,369 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        
+        body {
+            font-family: 'Arial', sans-serif;
+            margin: 0;
+            padding: 0;
+            background: #20232a;
+            color: #61dafb;
+            display: flex;
+            flex-direction: column;
+            height: 100vh; 
+        }
+        .content-wrapper {
+            flex-grow: 1;
+            display: flex;
+            justify-content: center;
+            align-items: center; 
+        }
+        
+        .container {
+            width: 80%;
+            max-width: 1200px;
+            margin: auto;
+            padding-top: 20px;
+        }
+
+        
+        header {
+            background: #20232a;
+            color: #61dafb;
+            padding-top: 20px;
+            padding-bottom: 20px;
+            border-bottom: #61dafb 3px solid;
+        }
+        header #branding {
+            display: inline-block;
+        }
+        header #branding h1 {
+            margin: 0;
+            font-size: 30px;
+            line-height: normal;
+        }
+        header nav {
+            display: inline-block;
+            float: right;
+        }
+        header nav ul {
+            list-style: none;
+            margin: 0;
+            padding: 0;
+        }
+        header nav ul li {
+            display: inline;
+            margin-left: 10px;
+            padding-right: 35px;
+        }
+        header nav a {
+            color: #61dafb;
+            text-decoration: none;
+            font-size: 18px;
+            transition: color 0.3s ease;
+        }
+        header nav a:hover, header nav .current a {
+            color: #fff;
+        }
+
+        header .btn {
+        display: inline-block;
+        font-size: 18px;
+        color: #fff;
+        border: none;
+        padding: 10px 20px;
+        background: #2fa2c1;
+        text-decoration: none;
+        transition: background 0.5s ease;
+        line-height: normal; 
+    }
+        
+        .profile {
+            background: #22252b;
+            padding: 30px;
+            border-radius: 5px;
+            width: 50%; 
+            max-width: 600px; 
+        }
+
+        .profile h2 {
+            margin: 0;
+            padding-bottom: 10px;
+            color: #fff;
+        }
+        .profile-list {
+            list-style: none;
+            padding: 0;
+        }
+        .profile-list li {
+            padding: 10px 0;
+            border-bottom: 1px solid #61dafb;
+        }
+        .profile-list li:last-child {
+            border-bottom: none;
+        }
+        .profile-list span {
+            font-weight: bold;
+            color: #61dafb;
+        }
+
+        
+        @media(max-width: 768px) {
+            .container {
+                width: 95%;
+            }
+            header nav ul li {
+                display: block;
+                margin: 10px 0;
+            }
+        }
+
+        .edit-password-btn {
+            background: #61dafb;
+            color: #20232a;
+            border: none;
+            padding: 10px 15px;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+            display: block; 
+            margin-top: 15px; 
+        }
+        .edit-password-btn:hover {
+            background: #4098a6; 
+        }
+            .modal {
+            display: none; 
+            position: fixed;
+            z-index: 1; 
+            left: 0;
+            top: 0;
+            width: 100%; 
+            height: 100%; 
+            overflow: auto; 
+            background-color: rgb(0,0,0); 
+            background-color: rgba(0,0,0,0.4); 
+            padding-top: 60px; 
+        }
+
+        .modal-content {
+            background-color: #20232a;
+            margin: 5% auto; 
+            padding: 20px;
+            border: 1px solid #888;
+            width: 80%; 
+            border-radius: 5px; 
+            max-width: 500px;
+        }
+
+        .close {
+            color: #aaa;
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+        }
+
+        .close:hover,
+        .close:focus {
+            color: #fff;
+            text-decoration: none;
+            cursor: pointer;
+        }
+
+        
+
+        
+        .modal-form input[type="password"] {
+            width: calc(100% - 20px);
+            padding: 10px;
+            margin-top: 8px;
+            margin-bottom: 8px;
+            border: 1px solid #61dafb;
+            border-radius: 5px;
+            background: #282c34;
+            color: #61dafb;
+        }
+
+        .modal-form button[type="submit"] {
+            width: 100%;
+            padding: 10px;
+            margin-top: 10px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            background: #61dafb;
+            color: #20232a;
+        }
+
+        .modal-form button[type="submit"]:hover {
+            background: #4098a6;
+        }
+        
+        .success-message, .error-message {
+            color: #61dafb;
+            background-color: #22252b;
+            padding: 10px;
+            margin-top: 10px;
+            border-radius: 5px;
+            display: none; 
+        }
+
+        .error-message {
+            color: #f44336;
+        }
+        .link:hover, .link:visited, .link:link, .link:active
+        {
+            text-decoration: none;
+            color: inherit;
+        }
+    </style>
+    <title>Профиль пользователя — VR Service</title>
+</head>
+<body>
+    <!-- Навигационная панель -->
+    <header>
+        <div class="container">
+            <div id="branding">
+                <a href="/" class="link"><h1>FixVR</h1></a>
+            </div>
+            <nav>
+                <ul>
+                    <li><a href="panel" class="btn" id="orders">Заявки</a></li>
+                    <li class="current"><a href="profile">Профиль</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Блок профиля -->
+    <div class="content-wrapper">
+        <!-- Блок профиля -->
+        <div class="profile">
+            <h2>Профиль пользователя</h2>
+            <ul class="profile-list">
+                <li><span>Email:</span> </li>
+                <li><span>Количество заявок:</span> </li>
+                <!-- Дополнительные поля -->
+            </ul>
+            <button class="edit-password-btn">Изменить пароль</button>
+        </div>
+    </div>
+<div id="passwordModal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <h2>Смена пароля</h2>
+            <form class="modal-form">
+                <input type="password" id="currentPassword" maxlength="256" placeholder="Текущий пароль" required>
+                <input type="password" id="newPassword" maxlength="256" placeholder="Новый пароль" required>
+                <button type="submit">Сменить пароль</button>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Fetch the profile data
+            fetch('/api/profile')
+                .then(response => response.json())
+                .then(data => {
+                    // Update the profile information on the page
+                    const profileList = document.querySelector('.profile-list');
+                    profileList.innerHTML = `
+                        <li><span>Email:</span> ${data.email}</li>
+                        <li><span>Количество заявок:</span> ${data.request_count}</li>
+                    `;
+                })
+                .catch(error => console.error('Error:', error));
+
+
+            // Получаем элемент модального окна
+            var modal = document.getElementById('passwordModal');
+
+            // Получаем кнопку, которая открывает модальное окно
+            var btn = document.querySelector('.edit-password-btn');
+
+            // Получаем элемент <span>, который закрывает модальное окно
+            var span = document.getElementsByClassName('close')[0];
+
+            // Когда пользователь нажимает на кнопку, открываем модальное окно
+            btn.onclick = function() {
+                modal.style.display = 'block';
+            }
+
+            // Когда пользователь нажимает на <span> (x), закрываем модальное окно
+            span.onclick = function() {
+                modal.style.display = 'none';
+            }
+
+            // Когда пользователь нажимает в любое место вне модального окна, закрываем его
+            window.onclick = function(event) {
+                if (event.target == modal) {
+                    modal.style.display = 'none';
+                }
+            }
+
+            var form = document.querySelector('.modal-form');
+
+            form.onsubmit = function(event) {
+                event.preventDefault(); // Предотвращаем отправку формы по умолчанию
+
+                // Собираем данные из формы
+                var currentPassword = document.getElementById('currentPassword').value;
+                var newPassword = document.getElementById('newPassword').value;
+
+                // Создаем объект для отправки данных
+                var formData = new FormData();
+                formData.append('currentPassword', currentPassword);
+                formData.append('newPassword', newPassword);
+
+                // Отправляем запрос на сервер
+                fetch('/api/change-password', { // Сюда должен быть указан правильный URL
+                    method: 'POST',
+                    body: formData
+                })
+                .then(function(response) {
+                    // В зависимости от статуса ответа, отображаем сообщение
+                    if (response.status === 200) {
+                        displayMessage('Пароль успешно изменен', 'success');
+                    } else {
+                        displayMessage('Ошибка при смене пароля', 'error');
+                    }
+                })
+                .catch(function(error) {
+                    // Обрабатываем ошибки сети
+                    displayMessage('Сетевая ошибка', 'error');
+                });
+
+                // Функция для отображения сообщения об успешности
+                function displayMessage(message, type) {
+                    var messageElement;
+                    if (type === 'success') {
+                        messageElement = document.querySelector('.success-message');
+                        messageElement.textContent = message;
+                        messageElement.style.display = 'block';
+                        messageElement = document.querySelector('.error-message');
+                        messageElement.style.display = 'none';
+                    } else {
+                        messageElement = document.querySelector('.success-message');
+                        messageElement.style.display = 'none';
+                        messageElement = document.querySelector('.error-message');
+                        messageElement.textContent = message;
+                        messageElement.style.display = 'block';
+                    }
+                }
+            };
+        }); 
+</script>
+
+    <div class="content-wrapper">
+    <!-- ...ваш HTML... -->
+
+    <!-- Блоки для сообщений об успешности -->
+    <div class="success-message"></div>
+    <div class="error-message"></div>
+</div>
+</body>
+</html>

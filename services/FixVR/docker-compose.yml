@@ -1,0 +1,12 @@
+version: "3.8"
+services:
+  web_techsupport:
+    build: src/.
+    ports:
+      - "8080:8080"
+    restart: unless-stopped
+    deploy:
+      resources:
+        limits:
+          cpus: "1"
+          memory: "512M"

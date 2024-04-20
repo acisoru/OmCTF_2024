@@ -1,0 +1,84 @@
+syntax = "proto3";
+package clone_market;
+
+service CloneMarket {
+    rpc SignIn (SignInRequest) returns (SignInResponse){}
+    rpc SignOut (SignOutRequest) returns (SignOutResponse){}
+    rpc SignUp (SignUpRequest) returns (SignUpResponse){}
+    rpc GetClones (GetClonesRequest) returns (GetClonesResponse){}
+    rpc CreateClone (CreateCloneRequest) returns (CreateCloneResponse){}
+    rpc CreateCloneFromURL (CreateCloneFromURLRequest) returns (CreateCloneFromURLResponse){}
+    rpc Ping (PingRequest) returns (PingResponse) {}
+}
+
+
+message SignInRequest  {
+    string username = 1;
+    string password = 2;
+}
+
+message PingRequest{
+    string pong = 1;
+}
+
+message PingResponse {
+    string pong = 1;
+}
+
+message SignInResponse {
+    int32 id = 1;
+    string token = 2;
+}
+
+message SignOutRequest {
+    int32 id = 1;
+    string token = 2;
+}
+
+message SignOutResponse {
+    bool success = 1;
+    string server_resp = 2;
+}
+
+message SignUpRequest{
+    string username = 1;
+    string password = 2;
+}
+
+message SignUpResponse{
+    int32 id = 1;
+    string server_resp = 2;
+}
+
+message GetClonesRequest{
+    int32 my_id = 1;
+    int32 user_id = 2;
+    string token = 3;
+}
+
+message GetClonesResponse{
+    repeated string clones=1;
+}
+
+message CreateCloneRequest {
+    int32 id = 1;
+    string token = 2;
+    string cloneUUID = 3;
+    string description = 4;
+}
+
+message CreateCloneResponse{
+    bool success = 1;
+    string server_resp=2;
+}
+
+message CreateCloneFromURLRequest{
+    int32 id = 1;
+    string token = 2;
+    string url = 3;
+}
+
+message CreateCloneFromURLResponse{
+    bool success = 1;
+    string server_resp=2;
+}

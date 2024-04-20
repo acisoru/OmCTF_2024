@@ -1,0 +1,25 @@
+version: '3.8'
+
+services:
+  app:
+    build: .
+    restart: unless-stopped
+    ports:
+      - "2112:2112"
+    cpus: 1
+    pids_limit: 64
+    mem_limit: 512m
+    volumes:
+      - ./data:/data
+  cleaner:
+    image: c4tbuts4d/dedcleaner:latest
+    restart: unless-stopped
+    volumes:
+      - ./data:/data
+    environment:
+      - DELETE_AFTER=30m
+      - SLEEP=30m
+      - DIRS=/data
+
+volumes:
+  data:

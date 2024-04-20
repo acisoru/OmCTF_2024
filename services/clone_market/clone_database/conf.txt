@@ -1,0 +1,2 @@
+admin_username=your_admin_username
+admin_password=your_admin_password

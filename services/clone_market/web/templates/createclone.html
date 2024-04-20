@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Clone Market - Create Clone</title>
+    <script type="text/javascript">
+        function createClone() {
+            const userId = document.getElementById('user_id').value;
+            const token = document.getElementById('token').value;
+            const cloneUUID = document.getElementById('cloneUUID').value;
+            const description = document.getElementById('description').value;
+
+            fetch('/createclone', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ id: parseInt(userId), token: token, cloneUUID: cloneUUID, description: description })
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.error) {
+                    document.getElementById('response').innerHTML = 'Error: ' + data.error;
+                } else {
+                    document.getElementById('response').innerHTML = 'Success: ' + data.success + '<br>Server Response: ' + data.server_resp;
+                }
+            }).catch((error) => {
+                console.error('Error:', error);
+            });
+        }
+    </script>
+</head>
+<body>
+    <h1>Create Clone</h1>
+    <input type="text" id="user_id" placeholder="User ID">
+    <br>
+    <input type="text" id="token" placeholder="Token">
+    <br>
+    <input type="text" id="cloneUUID" placeholder="Clone UUID">
+    <br>
+    <input type="text" id="description" placeholder="Description">
+    <br>
+    <button onclick="createClone()">Create Clone</button>
+    <div id="response"></div>
+</body>
+</html>

@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<style>
+    body {
+        font-family: 'Arial', sans-serif;
+        margin: 0;
+        padding: 0;
+        background: #20232a;
+        color: #333;
+    }
+    .container {
+        width: 80%;
+        margin: auto;
+        overflow: hidden;
+    }
+    header {
+        background: #20232a;
+        color: #61dafb;
+        padding-top: 20px;
+        padding-bottom: 20px;
+        border-bottom: #61dafb 3px solid;
+    }
+    header a {
+            color: #61dafb;
+            text-decoration: none;
+            text-transform: uppercase;
+            font-size: 16px;
+            line-height: 50px; 
+        }
+    header .btn {
+        display: inline-block;
+        font-size: 18px;
+        color: #fff;
+        border: none;
+        padding: 10px 20px;
+        background: #2fa2c1;
+        text-decoration: none;
+        transition: background 0.5s ease;
+        line-height: normal; 
+    }
+
+    header ul {
+        padding: 0;
+        margin: 0;
+        list-style: none;
+        overflow: hidden;
+    }
+    header li {
+        float: left;
+        padding: 0 20px 0 20px;
+    }
+    header #branding {
+        float: left;
+    }
+    header #branding h1 {
+        margin: 0;
+        padding: 0;
+        line-height: 50px; 
+        
+    }
+
+    header nav {
+        float: right;
+        margin-top: 10px;
+    }
+    header .highlight, header .current a {
+        font-weight: bold;
+    }
+    header a:hover {
+        font-weight: bold;
+    }
+    @media(max-width: 768px) {
+        header .container {
+            padding: 0 20px;
+        }
+        header #branding, header nav {
+            float: none;
+            text-align: center;
+            width: 100%;
+        }
+        header nav ul {
+            text-align: center;
+        }
+        header nav ul li {
+            display: inline;
+            padding: 5px;
+        }
+    }
+    section#showcase {
+        min-height: 300px;
+        background: #20232a;
+        text-align: center;
+        color: #61dafb;
+    }
+    section#showcase h1 {
+        margin-top: 100px;
+        font-size: 55px;
+        margin-bottom: 10px;
+    }
+    section#showcase p {
+        font-size: 20px;
+    }
+
+    section#boxes {
+        margin: 20px 0;
+        text-align: center;
+    }
+
+    section#boxes .box {
+        width: 30%;
+        display: inline-block;
+        background: #2fa2c1;
+        color: #fff;
+        padding: 20px;
+        margin: 5px;
+        vertical-align: top;
+        transition: background 0.5s ease;
+    }
+    
+    section#boxes .box:hover {
+        background: #20232a;
+        cursor: pointer;
+    }
+
+    .btn {
+        display: inline-block;
+        font-size: 18px;
+        color: #fff;
+        border: none;
+        padding: 10px 20px;
+        background: #2fa2c1;
+        text-decoration: none;
+        transition: background 0.5s ease;
+    }
+    
+    .btn:hover {
+        background: #20232a;
+        cursor: pointer;
+    }
+    .link:hover, .link:visited, .link:link, .link:active
+    {
+        text-decoration: none;
+        color: inherit;
+    }
+</style>
+<title>FixVR — Ремонт и сервис</title>
+</head>
+<body>
+    <header>
+        <div class="container">
+            <div id="branding">
+                <h1>FixVR</h1>
+            </div>
+            <nav>
+                <ul>
+                    <li class="current"><a href="/">Главная</a></li>
+                    <li><a href="panel">Услуги</a></li>
+                    <li><a href="login" id="login">Логин</a></li>
+                    <li><a href="registration" class="btn" id="register">Регистрация</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <section id="showcase">
+        <div class="container">
+            <h1>Профессиональный ремонт VR-очков</h1>
+            <p>Быстро. Надежно. С гарантией.</p>
+        </div>
+    </section>
+
+    <section id="boxes">
+        <div class="container">
+            <div class="box">
+                <h3>О нас</h3>
+                <p>Мы специализируемся на ремонте и обслуживании всех типов VR-очков.</p>
+            </div>
+            <div class="box">
+                <h3>Опыт</h3>
+                <p>Мы работаем в этой сфере более 5 лет и знаем все нюансы современного оборудования.</p>
+            </div>
+            <div class="box">
+                <h3>Как воспользоваться услугами?</h3>
+                <p>Регистрируйтесь на нашем сайте для записи на ремонт.</p>
+            </div>
+        </div>
+    </section>
+</body>
+</html>

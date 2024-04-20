@@ -1,0 +1,734 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        
+        body {
+            font-family: 'Arial', sans-serif;
+            margin: 0;
+            padding: 0;
+            background: #20232a;
+            color: #61dafb;
+        }
+        
+        
+        .container {
+            width: 80%;
+            max-width: 1200px;
+            margin: auto;
+            padding-top: 20px;
+        }
+
+        
+        header {
+            background: #20232a;
+            color: #61dafb;
+            padding-top: 20px;
+            padding-bottom: 20px;
+            border-bottom: #61dafb 3px solid;
+        }
+        header #branding {
+            display: inline-block;
+        }
+        header #branding h1 {
+            margin: 0;
+            font-size: 30px;
+            line-height: normal;
+        }
+        header nav {
+            display: inline-block;
+            float: right;
+        }
+        header nav ul {
+            list-style: none;
+            margin: 0;
+            padding: 0;
+        }
+        header nav ul li {
+            display: inline;
+            margin-left: 10px;
+            padding-right: 35px;
+        }
+        header nav a {
+            color: #61dafb;
+            text-decoration: none;
+            font-size: 18px;
+            transition: color 0.3s ease;
+        }
+        header nav a:hover, header nav .current a {
+            color: #fff;
+        }
+
+        
+        .main-content {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 20px;
+        }
+
+        
+        .request-list {
+            flex-grow: 2;
+            margin-right: 2%;
+        }
+        .request {
+            background-color: #2fa2c1;
+            padding: 15px 20px;
+            margin-bottom: 10px;
+            border-radius: 5px;
+            overflow: hidden;
+            position: relative;
+            min-width: 450px;
+            max-width: 800px;
+            border: 1px solid #2fa2c1;
+        }
+        .request:hover {
+            border: 1px solid white;
+
+        }
+        .request img {
+            width: 100px;
+            height: 100px;
+            border-radius: 50%; 
+            object-fit: cover; 
+            float: left;
+            margin-right: 20px;
+        }
+        .request-content {
+            overflow: hidden;
+            padding-top: 5px;
+        }
+        .request-content h3 {
+            font-size: 22px;
+            margin: 0 0 5px 0;
+            color: #fff;
+            overflow: hidden;
+            display: -webkit-box;
+        }
+        .request-content p {
+            margin: 0;
+            color: #e6e6e6; 
+            overflow: hidden;
+            display: -webkit-box;
+            -webkit-line-clamp: 3;
+            -webkit-box-orient: vertical;
+        }
+
+        
+        .information {
+            flex-basis: 28%;
+            background: #22252b;
+            padding: 20px;
+            border-radius: 5px;
+            min-width: 340px;
+            max-height: 240px;
+        }
+        .information h3 {
+            color: #61dafb;
+            font-size: 24px;
+            margin: 0 0 20px 0;
+        }
+        .information p {
+            color: #e6e6e6;
+            margin: 0 0 10px 0;
+        }
+        .information b {
+            color: #fff;
+        }
+        header .btn {
+            display: inline-block;
+            font-size: 18px;
+            color: #fff;
+            border: none;
+            padding: 10px 20px;
+            background: #2fa2c1;
+            text-decoration: none;
+            transition: background 0.5s ease;
+            line-height: normal; 
+        }
+
+        @media(max-width: 768px) {
+            .container {
+                width: 95%;
+            }
+            .main-content {
+                flex-direction: column;
+            }
+            .request-list, .information {
+                width: 100%;
+                margin-right: 0;
+                margin-bottom: 20px;
+            }
+            header nav {
+                float: none;
+                text-align: center;
+            }
+            header nav ul li {
+                display: block;
+                margin: 10px 0;
+            }
+        }
+
+        .request .edit-btn,
+        .request .delete-btn {
+            display: none; 
+            position: absolute; 
+            top: 10px;
+            padding: 5px 10px; 
+            background: #61dafb;
+            color: #20232a;
+            border: none;
+            cursor: pointer;
+            transition: background 0.3s ease;
+            border-radius: 3px; 
+            font-size: 14px;
+        }
+        .request .edit-btn {
+            right: 100px; 
+        }
+        .request .delete-btn {
+            right: 10px; 
+        }
+        .request:hover .edit-btn, .request:hover .delete-btn {
+            display: block; 
+        }
+
+        .modal-edit {
+            display: none;
+            position: fixed;
+            z-index: 1; 
+            left: 0;
+            top: 0;
+            width: 100%; 
+            height: 100%; 
+            overflow: auto; 
+            background-color: rgb(0,0,0); 
+            background-color: rgba(0,0,0,0.4); 
+            padding-top: 60px; 
+        }
+        .modal-create {
+            display: none;
+            position: fixed;
+            z-index: 1; 
+            left: 0;
+            top: 0;
+            width: 100%; 
+            height: 100%; 
+            overflow: auto; 
+            background-color: rgb(0,0,0); 
+            background-color: rgba(0,0,0,0.4); 
+            padding-top: 60px; 
+        }
+        .modal-edit-content {
+            background-color: #22252b;
+            margin: 5% auto; 
+            padding: 30px;
+            border: none;
+            width: 50%; 
+            max-width: 600px; 
+            border-radius: 5px; 
+        }
+        .modal-content {
+            background-color: #22252b;
+            margin: 5% auto; 
+            padding: 30px;
+            border: none;
+            width: 50%; 
+            max-width: 600px; 
+            border-radius: 5px; 
+        }
+
+        .close-edit, .close-create {
+            color: #aaaaaa;
+            float: right;
+            font-size: 28px;
+            margin-left: 50px;
+        }
+
+        .close-edit:hover,
+        .close-edit:focus, .close-create:hover, .close-create:focus {
+            color: #ffffff;
+            text-decoration: none;
+            cursor: pointer;
+        }
+
+        .modal-edit-form input[type="text"],
+        .modal-edit-form textarea,
+        .modal-create-form input[type="text"], 
+        .modal-create-form textarea {
+            width: calc(100% - 20px);
+            padding: 10px;
+            margin-top: 8px;
+            margin-bottom: 8px;
+            border: 1px solid #61dafb;
+            border-radius: 5px;
+            background: #282c34;
+            color: #61dafb;
+            resize: vertical;
+        }
+
+        .modal-create-form button[type="submit"],
+        .modal-edit-form button[type="submit"] {
+            width: 100%;
+            padding: 10px;
+            margin-top: 10px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            background: #61dafb;
+            color: #20232a;
+        }
+
+        .modal-create-form button[type="submit"]:hover,
+        .modal-edit-form button[type="submit"]:hover {
+            background: #4098a6;
+        }
+        .create-btn {
+            background: #61dafb;
+            color: #20232a;
+            border: none;
+            padding: 10px 15px;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+            
+        }
+
+        .create-btn:hover {
+            background: #4098a6; 
+        }
+        .link:hover, .link:visited, .link:link, .link:active
+        {
+            text-decoration: none;
+            color: inherit;
+        }
+
+    </style>
+    <title>Личный кабинет — FixVR</title>
+</head>
+<body>
+    <!-- Навигационная панель -->
+    <header>
+        <div class="container">
+            <div id="branding">
+                <a href="/" class="link"><h1>FixVR</h1></a>
+            </div>
+            <nav>
+                <ul>
+                    <li><a href="panel" class="btn" id="orders">Заявки</a></li>
+                    <li class="current"><a href="profile">Профиль</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Основной контент -->
+    <div class="container">
+            <div class="main-content">
+                <!-- Список заявок -->
+                <div class="request-list" id="requests">
+                </div>
+            <!-- Блок с информацией -->
+            <div class="information">
+                <!-- Обертка для кнопки создания новой заявки -->
+                <div class="create-request-wrapper">
+                    <button id="createRequestBtn" class="btn create-btn" style="width: 100%; margin-bottom: 10px; font-size: 14px">Создать заявку</button>
+                </div>
+                <h3>Время работы</h3>
+                <p>10:00 - 22:30 <b>(Без выходных)</b></p>
+                <h3>Последние новости</h3>
+                <p>Спешим сообщить, что у нас появилась возможность ремонта Ваших VR-очков не только в условиях Сервисного Центра, но и у Вас на дому. Будем рады Вашему обращению!</p>
+                <!-- Дополнительная информация -->
+            </div>
+        </div>
+    </div>
+
+    <div id="editRequestModal" class="modal-edit">
+        <div class="modal-edit-content">
+            <span class="close-edit">&times;</span>
+            <h2>Редактирование заявки</h2>
+            <form id="editRequestForm" class="modal-edit-form">
+                <input type="text" id="editRequestTitle" maxlength="256" placeholder="Название заявки" required>
+                <textarea id="editRequestDescription" maxlength="256" placeholder="Описание заявки"></textarea>
+                <!-- Здесь могут быть и другие поля формы -->
+                <button type="submit">Сохранить изменения</button>
+            </form>
+            <div id="editSuccessMessage" class="success-message" style="display: none; color: green; padding-top: 20px"></div>
+            <div id="editErrorMessage" class="error-message" style="display: none; color: red; padding-top: 20px"></div>
+        </div>
+    </div>
+    <div id="createRequestModal" class="modal-create">
+        <div class="modal-content">
+            <span class="close-create">&times;</span>
+            <h2>Создание новой заявки</h2>
+            <form id="createRequestForm" class="modal-create-form">
+                <input type="text" id="newRequestTitle" maxlength="256" placeholder="Название заявки" required>
+                <textarea id="newRequestDescription" maxlength="256" placeholder="Описание заявки" required></textarea>
+                <!-- Здесь могут быть и другие поля формы -->
+                <button type="submit">Создать заявку</button>
+            </form>
+            <div id="createSuccessMessage" class="success-message" style="display: none; color: green; padding-top: 20px"></div>
+            <div id="createErrorMessage" class="error-message" style="display: none; color: red; padding-top: 20px"></div>
+        </div>
+    </div>
+
+    <script>
+
+        function updateRequests() {
+            const requestsDiv = document.getElementById('requests');
+            
+            const noRequestsLabel = requestsDiv.querySelector('.no-requests');
+            if (noRequestsLabel) {
+                noRequestsLabel.remove();
+            }
+            
+            if (requestsDiv.children.length === 0) {
+                const label = document.createElement('div');
+                label.className = 'no-requests';
+                label.textContent = 'No requests were created yet';
+
+                
+                label.style.color = '#fff'; 
+                label.style.fontSize = '18px'; 
+                label.style.fontWeight = 'bold'; 
+                label.style.textAlign = 'center'; 
+                label.style.padding = '20px'; 
+                label.style.marginTop = '20px'; 
+                label.style.border = '1px solid #61dafb'; 
+                label.style.borderRadius = '5px'; 
+
+                requestsDiv.appendChild(label);
+            }
+        }
+
+
+        document.addEventListener('DOMContentLoaded', function() {
+                fetch('/api/requests')
+                .then(response => {
+                    if(response.ok) {
+                        return response.json();
+                    } else {
+                        throw new Error('Error while fetching requests');
+                    }
+                })
+                .then(requests => {
+                    
+                    const requestsDiv = document.getElementById('requests');
+                    requests.forEach(request => {
+
+                        
+                        const requestDiv = document.createElement('div');
+                        requestDiv.className = 'request';
+                        requestDiv.dataset.requestId = request.id;
+
+                        const img = document.createElement('img');
+                        img.src = '/static/images/vr.png';
+                        img.alt = 'Заявка';
+                        requestDiv.appendChild(img);
+
+                        const requestContent = document.createElement('div');
+                        requestContent.className = 'request-content';
+                        requestDiv.appendChild(requestContent);
+
+                        const h3 = document.createElement('h3');
+                        h3.textContent = 'Заявка #' + request.id + ': ' + request.title;
+                        requestContent.appendChild(h3);
+
+                        const p = document.createElement('p');
+                        p.textContent = request.description;
+                        requestContent.appendChild(p);
+
+                        const editBtn = document.createElement('button');
+                        editBtn.className = 'edit-btn';
+                        editBtn.textContent = '✎ Редактировать';
+                        requestDiv.appendChild(editBtn);
+
+                        const deleteBtn = document.createElement('button');
+                        deleteBtn.className = 'delete-btn';
+                        deleteBtn.textContent = '✖ Удалить';
+                        requestDiv.appendChild(deleteBtn);
+
+                        editBtn.addEventListener('click', function() {
+                                var requestId = this.closest('.request').getAttribute('data-request-id');
+                                openEditModal(requestId);
+                            });
+
+                        
+                        deleteBtn.addEventListener('click', function() {
+                            var requestId = this.closest('.request').getAttribute('data-request-id');
+
+                            if (confirm('Вы уверены, что хотите удалить заявку #' + requestId + '?')) {
+                                deleteRequest(requestId, requestElement);
+                            }
+                        });
+
+                        requestsDiv.appendChild(requestDiv);
+
+                    });
+                    updateRequests();
+                    addEventListeners();
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                });
+
+
+            
+            var editModal = document.getElementById('editRequestModal');
+            var editSpan = document.getElementsByClassName('close-edit')[0];
+
+            
+            var saveButton = document.querySelector('#editRequestForm button[type="submit"]');
+
+            
+            editSpan.onclick = function() {
+                editModal.style.display = 'none';
+            };
+
+            
+            function sendEditRequest(requestId, title, description) {
+                fetch('/api/edit-request/' + requestId, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        title: title,
+                        description: description
+                    })
+                })
+                .then(function(response) {
+                    if (response.ok) {
+                        showMessage('Заявка успешно изменена!', 'editSuccessMessage');
+                        return response.json();
+                    } else {
+                        throw new Error('Ошибка изменения заявки. Пожалуйста, попробуйте снова.');
+                    }
+                })
+                .then(function(data) {
+                    console.log(data);
+                    
+                    
+                    const requestElement = document.querySelector(`.request[data-request-id="${requestId}"]`);
+                    if (requestElement) {
+                        
+                        const titleElement = requestElement.querySelector('h3');
+                        const descriptionElement = requestElement.querySelector('p');
+                        if (titleElement) {
+                            titleElement.textContent = 'Заявка #' + requestId + ':&nbsp;' + data.request.title;
+                        }
+                        if (descriptionElement) {
+                            descriptionElement.textContent = data.request.description;
+                        }
+                    }
+
+                    editModal.style.display = 'none'; 
+                })
+                .catch(function(error) {
+                    showMessage(error, 'editErrorMessage');
+                    console.error(error);
+                });
+
+
+            }
+
+
+            
+            function showMessage(message, elementId) {
+                var messageElement = document.getElementById(elementId);
+                messageElement.textContent = message;
+                messageElement.style.display = 'block'; 
+
+                
+                setTimeout(function() {
+                    messageElement.style.display = 'none';
+                }, 4000);
+            }
+
+
+            
+            function openEditModal(requestId) {
+                
+                
+
+                
+                document.getElementById('editRequestForm').dataset.requestId = requestId;
+
+                editModal.style.display = 'block';
+            }
+
+            
+            document.querySelectorAll('.edit-btn').forEach(function(button) {
+                button.addEventListener('click', function() {
+                    var requestId = this.closest('.request').getAttribute('data-request-id');
+                    openEditModal(requestId);
+                });
+            });
+
+            
+            document.getElementById('editRequestForm').addEventListener('submit', function(event) {
+                event.preventDefault();
+                
+                
+                var requestId = this.dataset.requestId;
+                var title = document.getElementById('editRequestTitle').value;
+                var description = document.getElementById('editRequestDescription').value;
+
+                
+                sendEditRequest(requestId, title, description);
+            });
+
+
+            
+            window.addEventListener('click', function(event) {
+                if (event.target == editModal) {
+                    editModal.style.display = 'none';
+                }
+            });
+
+            var createModal = document.getElementById('createRequestModal');
+            var createBtn = document.getElementById('createRequestBtn');
+            var closeCreateSpan = document.getElementsByClassName('close-create')[0];
+
+            
+            createBtn.onclick = function() {
+                createModal.style.display = 'block';
+            };
+
+            
+            closeCreateSpan.onclick = function() {
+                createModal.style.display = 'none';
+            };
+
+            
+            document.getElementById('createRequestForm').addEventListener('submit', function(event) {
+                event.preventDefault();
+
+                
+                var title = document.getElementById('newRequestTitle').value;
+                var description = document.getElementById('newRequestDescription').value;
+
+                
+                fetch('/api/create-request', { 
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        title: title,
+                        description: description
+                    })
+                })
+                .then(function(response) {
+                    if (response.ok) {
+                        showMessage('Заявка успешно создана!', 'createSuccessMessage');
+                        return response.json();
+                    } else {
+                        throw new Error('Не удалось создать заявку. Пожалуйста, попробуйте снова.');
+                    }
+                })
+                .then(function(data) {
+                    console.log(data);
+
+                    const requestDiv = document.createElement('div');
+                    requestDiv.className = 'request';
+                    requestDiv.dataset.requestId = data.request.id;
+
+                    const img = document.createElement('img');
+                    img.src = '/static/images/vr.png';
+                    img.alt = 'Заявка';
+                    requestDiv.appendChild(img);
+
+                    const requestContent = document.createElement('div');
+                    requestContent.className = 'request-content';
+                    requestDiv.appendChild(requestContent);
+
+                    const h3 = document.createElement('h3');
+                    h3.textContent = 'Заявка #' + data.request.id + ': ' + data.request.title;
+                    requestContent.appendChild(h3);
+
+                    const p = document.createElement('p');
+                    p.textContent = data.request.description;
+                    requestContent.appendChild(p);
+
+                    const editBtn = document.createElement('button');
+                    editBtn.className = 'edit-btn';
+                    editBtn.textContent = '✎ Редактировать';
+                    requestDiv.appendChild(editBtn);
+
+                    const deleteBtn = document.createElement('button');
+                    deleteBtn.className = 'delete-btn';
+                    deleteBtn.textContent = '✖ Удалить';
+                    requestDiv.appendChild(deleteBtn);
+
+                    const requestsDiv = document.getElementById('requests');
+                    requestsDiv.appendChild(requestDiv);
+
+                    createModal.style.display = 'none'; 
+                    updateRequests();
+                    addEventListeners();
+                })
+                .catch(function(error) {
+                    showMessage(error, 'createErrorMessage');
+                    console.error(error);
+                });
+            });
+
+            window.onclick = function(event) {
+                if (event.target == createModal) {
+                    createModal.style.display = 'none';
+                }
+            };
+
+
+
+            function deleteRequest(requestId, requestElement) {
+                fetch('/api/delete-request/' + requestId, { 
+                    method: 'POST',
+                })
+                .then(function(response) {
+                    if (response.ok) {
+                        requestElement.remove();
+                        updateRequests();
+                    } else {
+                        throw new Error('Не удалось удалить заявку. Пожалуйста, попробуйте снова.');
+                    }
+                })
+                .catch(function(error) {
+                    alert(error);
+                    console.error(error);
+                });
+            }
+
+
+
+            function addEventListeners() {
+                document.querySelectorAll('.edit-btn').forEach(function(button) {
+                    button.addEventListener('click', function() {
+                        var requestId = this.closest('.request').getAttribute('data-request-id');
+                        openEditModal(requestId);
+                    });
+                });
+                document.querySelectorAll('.delete-btn').forEach(function(button) {
+                    button.addEventListener('click', function() {
+                        var requestElement = this.closest('.request');
+                        var requestId = requestElement.getAttribute('data-request-id');
+                        
+                        if (confirm('Вы уверены, что хотите удалить заявку #' + requestId + '?')) {
+                            deleteRequest(requestId, requestElement);
+                        }
+                    });
+                });
+
+        }
+
+        });
+        
+
+    </script>
+
+
+</body>
+</html>

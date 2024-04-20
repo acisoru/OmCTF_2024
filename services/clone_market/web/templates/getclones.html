@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Clone Market - Get Clones</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            background-color: #f5f5f5;
+        }
+        h1 {
+            color: #333;
+        }
+        input[type="text"] {
+            padding: 10px;
+            margin-bottom: 10px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            width: 200px;
+        }
+        button {
+            padding: 10px 20px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #45a049;
+        }
+        #response {
+            margin-top: 20px;
+            padding: 10px;
+            background-color: #fff;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Get Clones</h1>
+    <input type="text" id="my_id" placeholder="My ID">
+    <br>
+    <input type="text" id="user_id" placeholder="User ID to get clones from">
+    <br>
+    <input type="text" id="token" placeholder="Token">
+    <br>
+    <button onclick="getClones()">Get Clones</button>
+    <div id="response"></div>
+
+    <script>
+        function getClones() {
+            const my_id = document.getElementById('my_id').value;
+            const user_id = document.getElementById('user_id').value;
+            const token = document.getElementById('token').value;
+            
+            fetch('/getclones', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ my_id: parseInt(my_id), user_id: parseInt(user_id), token: token })
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.error) {
+                    document.getElementById('response').innerHTML = 'Error: ' + data.error;
+                } else {
+                    const responseDiv = document.getElementById('response');
+                    responseDiv.innerHTML = '';
+                    data.clones.forEach(clone => {
+                        responseDiv.innerHTML += '<p>Clone UUID: ' + clone.cloneUUID + ', Description: ' + clone.description + '</p>';
+                    });
+                }
+            }).catch((error) => {
+                console.error('Error:', error);
+            });
+        }
+    </script>
+</body>
+</html>
